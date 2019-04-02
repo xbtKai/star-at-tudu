@@ -119,7 +119,7 @@ router.post("/update",(req,res)=>{
 });
 
 // 用户登录界面
-router.post('/login',(req,res)=>{
+router.post('/reg',(req,res)=>{
 	console.log(req.body)
 	res.send("恭喜你看到了后台的信息")
 })
