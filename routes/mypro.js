@@ -118,10 +118,29 @@ router.post("/update",(req,res)=>{
 	});
 });
 
-// 用户登录界面
+// 用户注册界面
 router.post('/reg',(req,res)=>{
-	console.log(req.body)
-	res.send("恭喜你看到了后台的信息")
+	var $uid = req.body.uid
+	var $uname = req.body.uname
+	var $upwd = req.body.upwd
+	var $email = req.body.email
+	var $phone = req.body.phone
+	var $user_name = req.body.user_name
+	var $gender = req.body.gender
+
+	var sql = 'insert into xz_user set uname=?,upwd=?,email=?,phone=?user_name=?,gender=? where uid=?'
+
+	var infor = [$uname,$upwd,$email,$phone,$user_name,$gender,$uid]
+
+	pool.query(sql,infor,(err,result)=>{
+		if(err) throw err
+		if(result.affectedRows>0){
+			res.send('1') // 后台回复1,代表注册成功
+		}else{
+			res.send('0') // 后台回复2,代表注册失败
+		}
+	})
+
 })
 
 //导出路由
