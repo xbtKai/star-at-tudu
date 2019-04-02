@@ -1,12 +1,14 @@
-const mysql = require('mysql')
+const mysql = require('mysql');
+
 var pool = mysql.createPool({
-  host:'127.0.0.1',
+  host:'134.175.228.77',
   port:'3306',
-  user:'root',
-  password:'',
-  database:'weishang',
+  user:'xbt',
+  password:'524524123',
+  database:'xz',
   connectionLimit:15
 })
 
+//到处连接池对象
+module.exports=pool;
 
-module.exports=pool

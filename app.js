@@ -1,18 +1,27 @@
-// 引入express模块,创建服务器,使用并监听8080端口
-const express = require('express')
-var server = express()
-server.listen(8080)
-// 引入user路由
-const userRouter = require('./routes/user.js')
-// 引入body_parser模块
-const bodyParser = require('body-parser')
+//引入express模块
+const express = require('express');
+//引入用户路由器
+// const userRouter=require('./routes/user.js');
+// const productRouter=require('./routes/product.js')
+const myproRouter=require('./routes/mypro.js')
+// const homeworkRouter=require('./routes/homework.js')
+const bodyParser = require('body-parser');
+var server = express();
+server.listen(8080);
 
-// 使用中间件 让public目录托管静态资源
-server.use(express.static('public'))
-// 使用中间件 激活bodyParser,使post方法提交请求时,req.body方法可用
-server.use(bodyParser.urlencoded({
+
+
+// server.use(express.static('pubilc'))
+// server.use(express.static('ajaxdemo'))
+// server.use(express.static('homework'))
+server.use(express.static('mypro'))
+
+//使用body-parser中间件
+server.use( bodyParser.urlencoded({
   extended:false
 }))
-
-// 使用中间件 挂载user路由
-server.use('/user',userRouter)
+//挂载路由器 挂载到/user  路由访问 /user/reg
+// server.use('/user',userRouter);
+// server.use('/product',productRouter);
+server.use('/mypro',myproRouter);
+// server.use('/homework',homeworkRouter)
