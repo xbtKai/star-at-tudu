@@ -120,7 +120,6 @@ router.post("/update",(req,res)=>{
 
 // 用户注册界面
 router.post('/reg',(req,res)=>{
-	var $uid = req.body.uid
 	var $uname = req.body.uname
 	var $upwd = req.body.upwd
 	var $email = req.body.email
@@ -128,9 +127,11 @@ router.post('/reg',(req,res)=>{
 	var $user_name = req.body.user_name
 	var $gender = req.body.gender
 
-	var sql = 'insert into xz_user set uname=?,upwd=?,email=?,phone=?user_name=?,gender=? where uid=?'
+	console.log($uname,$upwd,$email,$phone,$user_name,$gender)
+	// res.send('you connect with back')
+	var sql = 'insert into xz_user set uname=?,upwd=?,email=?,phone=?,user_name=?,gender=?'
 
-	var infor = [$uname,$upwd,$email,$phone,$user_name,$gender,$uid]
+	var infor = [$uname,$upwd,$email,$phone,$user_name,$gender]
 
 	pool.query(sql,infor,(err,result)=>{
 		if(err) throw err
