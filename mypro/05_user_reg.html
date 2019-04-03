@@ -10,7 +10,13 @@
   电子邮箱: <input type="search" id="email"><br>
   联系方式: <input type="search" id="phone"><br>
   用户姓名: <input type="search" id="user_name"><br>
-  用户性别: <input type="search" id="gender"><br>
+  
+  用户性别: <br>
+  <input type="radio" name="gender" id="genderman" checked>男<br>
+  <input type="radio" name="gender" id="genderwoman">女<br>
+  
+  
+  
   <button onclick="reg()">注册</button>
   <script>
     function reg(){
@@ -25,8 +31,16 @@
       xhr.open("post",url,true)
 
       xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+      
+     if(genderman.checked){
+       var genderCode = "0" // 为性别男
+     }else if(genderwoman.checked){
+       genderCode = "1"  // 为性别女
+     }else{
+       genderCode = "2" // 为性别不详
+     }
 
-      var formdata = `uname=${uname.value}&upwd=${upwd.value}&email=${email.value}&phone=${phone.value}&user_name=${user_name.value}&gender=${gender.value}`
+      var formdata = `uname=${uname.value}&upwd=${upwd.value}&email=${email.value}&phone=${phone.value}&user_name=${user_name.value}&gender=${genderCode}`
       xhr.send(formdata)
     }
   </script>
