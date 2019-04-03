@@ -4,51 +4,9 @@ const express=require('express');
 const pool=require('../pool.js');
 //创建路由器对象
 var router=express.Router();
-//获取用户名和密码
-router.post("/login_post",(req,res)=>{
-	var $uname=req.body.uname;
-	var $upwd=req.body.upwd;
-	//验证
-	if(!$uname){
-		res.send("用户名为空");
-		return;
-	}
-	if(!$upwd){
-		res.send("密码为空");
-		return;
-	}
-	var sql="select * from xz_user where uname=? and upwd=?";
-	pool.query(sql,[$uname,$upwd],(err,result)=>{
-		if(err) throw err;
-		if(result.length>0){
-			res.send("登录成功");
-		}else{
-			res.send("用户名或密码不正确");
-		}
-	});
-});
 
-//用户注册
-router.post("/user_reg",(req,res)=>{
-	var num=400;
-	var obj=req.body;
-	for(var key in obj){
-		num++;
-		if(!obj[key]){
-		res.send({code:num,msg:key+" required"});
-		return;
-		}
-	}
-	var sql="INSERT INTO xz_user SET ?";
-	pool.query(sql,[obj],(err,result)=>{
-		if(err) throw err;
-		if(result.affectedRows>0){
-			res.send({code:200,msg:"注册成功！"});
-		}
-	});
-});
 
-//用户列表
+// 1. 用户列表 ----> mypro/user_list.html
 router.get("/userlist",(req,res)=>{
 	var sql="select * from xz_user";
 	pool.query(sql,(err,result)=>{
@@ -57,7 +15,7 @@ router.get("/userlist",(req,res)=>{
 	});
 });
 
-//删除用户
+// 1.2 删除用户 ----> mypro/user_list.html
 router.get("/delUser",(req,res)=>{
 	var obj=req.query;
 	var $uid=obj.uid;
@@ -72,7 +30,7 @@ router.get("/delUser",(req,res)=>{
 	});
 });
 
-//根据uid查询用户详细信息
+// 2. 根据uid查询用户详细信息  ----> mypro/user_update.html
 router.get("/query",(req,res)=>{
 	var $uid=req.query.uid;
 	if(!$uid){
@@ -90,7 +48,7 @@ router.get("/query",(req,res)=>{
 	});
 });
 
-//修改用户
+// 2.1 修改用户信息	----> mypro/user_update.html
 router.post("/update",(req,res)=>{
 	console.log(req.body)
 	var obj=req.body;
@@ -118,7 +76,7 @@ router.post("/update",(req,res)=>{
 	});
 });
 
-// 用户注册界面
+// 3. 用户注册界面	----> user_reg.html
 router.post('/reg',(req,res)=>{
 	var $uname = req.body.uname
 	var $upwd = req.body.upwd
