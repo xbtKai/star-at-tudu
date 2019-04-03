@@ -85,21 +85,29 @@ router.post('/reg',(req,res)=>{
 	var $user_name = req.body.user_name
 	var $gender = req.body.gender
 
-	console.log($uname,$upwd,$email,$phone,$user_name,$gender)
-	// res.send('you connect with back')
-	var sql = 'insert into xz_user set uname=?,upwd=?,email=?,phone=?,user_name=?,gender=?'
 
-	var infor = [$uname,$upwd,$email,$phone,$user_name,$gender]
 
-	pool.query(sql,infor,(err,result)=>{
+	var sql1 = "select uname from xz_user where uname=?"
+
+	pool.query(sql1,[$uname],(err,result)=>{
 		if(err) throw err
-		if(result.affectedRows>0){
-			res.send('1') // 后台回复1,代表注册成功
+		if(result.length>0){
+			res.send('3') // 后台返回前端3,代表该用户名已存在,注册失败
 		}else{
-			res.send('0') // 后台回复2,代表注册失败
+			if(req.body.allowReg=='1'){
+				var sql = 'insert into xz_user set uname=?,upwd=?,email=?,phone=?,user_name=?,gender=?'
+				var infor = [$uname,$upwd,$email,$phone,$user_name,$gender]
+				pool.query(sql,infor,(err,result)=>{
+					if(err) throw err
+					if(result.affectedRows>0){
+						res.send('1') // 后台返回前端1,代表注册成功
+					}else{
+						res.send('0') // 后台返回前端2,代表注册失败
+					}
+				})
+			}
 		}
 	})
-
 })
 
 //导出路由
