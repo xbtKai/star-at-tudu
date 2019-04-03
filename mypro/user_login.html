@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+
+<body>
+  <h2>用户登录</h2>
+  登陆名称: <input type="text" id="uname"> <br>
+  登陆密码: <input type="password" id="password"> <br>
+  <button onclick="login()">登陆</button>
+
+  <script>
+    function login(){
+      var xhr = new XMLHttpRequest()
+      xhr.onreadystatechange= ()=>{
+        if(xhr.readyState==4 && xhr.status==200){
+          var result = xhr.responseText
+          console.log(result)
+        }
+      }
+    }
+  </script>
+</body>
+</html>
