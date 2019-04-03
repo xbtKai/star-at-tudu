@@ -5,7 +5,7 @@
 </head>
 <body>
   <h1>注册用户界面</h1>
-  登陆名称: <input type="search" id="uname"><br>
+  登陆名称: <input type="search" id="uname" onblur="checkName()"> <a id="showNameIfExists"></a> <br>
   用户密码: <input type="password" id="upwd"><br>
   电子邮箱: <input type="search" id="email"><br>
   联系方式: <input type="search" id="phone"><br>
@@ -27,8 +27,8 @@
           if(result=="1"){
             alert("注册成功")
             location.href="http://127.0.0.1:8080/user_list.html"
-          }else{
-            alert("注册失败")
+          }else if(result=="2"){
+            alert("未知错误,注册失败")
           }
         }
       }
@@ -45,9 +45,28 @@
        genderCode = "2" // 为性别不详
      }
 
-      var formdata = `uname=${uname.value}&upwd=${upwd.value}&email=${email.value}&phone=${phone.value}&user_name=${user_name.value}&gender=${genderCode}`
+      var formdata = `uname=${uname.value}&upwd=${upwd.value}&email=${email.value}&phone=${phone.value}&user_name=${user_name.value}&gender=${genderCode}&allowReg=1`
       xhr.send(formdata)
     }
+    function checkName(){
+      var xhr = new XMLHttpRequest()
+      xhr.onreadystatechange= ()=>{
+        if(xhr.readyState==4 && xhr.status==200){
+          var result = xhr.responseText
+          if(result=="3"){
+            document.getElementById('showNameIfExists').innerHTML = "用户名已存在,请更换"
+          }
+        }
+      }
+      var url = "mypro/reg"
+      xhr.open("post",url,true)
+      
+      xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded")
+
+      var formData = "uname="+uname.value
+      xhr.send(formData)
+    }
+    
   </script>
 </body>
 </html>
