@@ -1,0 +1,97 @@
+<!doctype html>
+<html> 
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+	</head>
+	<body onload="query()">
+<!-- 		<input type="text" id="uid"> -->
+<!-- 		<button onclick="query()">查询</button> -->
+		<div>
+			用户名称：<input type="text" id="uname">
+		</div>
+		<div>
+			用户密码：<input type="text" id="upwd">
+		</div> 
+		<div>
+			用户邮箱：<input type="text" id="email">
+		</div>
+		<div>
+			联系方式：<input type="text" id="phone">
+		</div> 
+		<div>
+			真实姓名：<input type="text" id="user_name">
+		</div> 
+		<div>
+			用户性别：
+			<input type="radio" id="g_man" name="gender" value="1">男
+			<input type="radio" id="g_women" name="gender" value="0">女
+			<button onclick="update()">确认修改</button> 
+		</div>
+	</body>
+	<script>
+		function update(){
+			//1.创建xhr异步对象
+			var xhr=new XMLHttpRequest();
+			//4.绑定监听，响应请求
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4 && xhr.status==200){
+					console.log("xhr.readyState~~~"+xhr.status);
+					var result=xhr.responseText;
+					if(result=="1"){
+						alert("修改成功");
+						location.href="http://localhost:8080/user_list.html";
+					}
+				}
+			}
+			//2.打开连接，创建请求
+			xhr.open("post","/mypro/update",true);
+			//3.发送请求
+			xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+			//获取gender的值
+			var gender="";
+			if(g_man.checked){
+				gender=g_man.value;
+			}else if(g_women.checked){
+				gender=g_women.value;
+			}else{
+				gender=null;
+			}
+			//获取uid的值
+			var urlParams=new URLSearchParams(location.search);
+			var uid=urlParams.get("uid");
+			var formdata="uname="+uname.value+"&upwd="+upwd.value+"&email="+email.value+"&phone="+phone.value+"&user_name="+user_name.value+"&gender="+gender+"&uid="+uid;
+			xhr.send(formdata);
+			console.log(formdata);
+		}
+		function query(){
+			//获取前页面串过来的uid
+			var urlParams=new URLSearchParams(location.search);
+			var uid=urlParams.get("uid");
+			//1.创建xhr对象
+			var xhr=new XMLHttpRequest();
+			//4.绑定监听，响应请求
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4 && xhr.status==200){
+					var result=xhr.responseText;
+					var user=JSON.parse(result);
+					uname.value=user.uname;
+					upwd.value=user.upwd;
+					email.value=user.email;
+					phone.value=user.phone;
+					user_name.value=user.user_name;
+					if(user.gender==1){
+						g_man.checked=true;
+					}else if(user.gender==0){
+						g_women.checked=true;
+					}
+				}
+			}
+				//2.打开连接,创建请求
+				xhr.open("get","/mypro/query?uid="+uid,true);
+				//3.发送请求
+				xhr.send(null);
+		}
+		
+	</script>
+</html>
